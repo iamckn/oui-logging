@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+"$SCRIPT_DIR/combine-profiler-files"
+
+if [ ! -s "$SCRIPT_DIR/../.tmp/script-coverage/coverage.stats" ]
+then
+    echo "No coverage statistics found, skipping coverage analysis."
+    exit
+fi
+
+# Convert the Brofiler stats to gcov
+"$SCRIPT_DIR/coverage-to-gcov"
+
+if [ "$CI" == "true" ]
+then
+    echo "Workflow: $GITHUB_WORKFLOW"
+    if [ "$GITHUB_WORKFLOW" == "Zeek master" ]
+    then
+        pip3 install --user cpp-coveralls PyYAML
+        env
+        # Send to coveralls.io
+        echo "service_name: github" > /tmp/cov.yml
+        cd "$SCRIPT_DIR/../.."; $HOME/.local/bin/coveralls -y /tmp/cov.yml -i scripts --gcov-options '\-lp'
+    elif [ "$GITLAB_CI" == "true" ]
+    then
+        cp "$SCRIPT_DIR/../.btest_output.xml" "$CI_PROJECT_DIR/.btest_output.xml"
+        cd "$SCRIPT_DIR/../.."; gcovr -g -r scripts --xml -o "$CI_PROJECT_DIR/.coverage.cobertura.xml"
+    fi
+fi

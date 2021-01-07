@@ -1,0 +1,4 @@
+gitpython
+pygments>=2.5.0
+sphinx
+sphinx-rtd-theme

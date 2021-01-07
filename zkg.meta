@@ -1,0 +1,11 @@
+[package]
+description = Adds the OUI name based on Mac Address
+credits = ck@ckn.io
+tags = OUI, "Device Manufacturer"
+
+test_command = cd tests && make
+
+script_dir = ./scripts
+
+depends =
+  zeek >=2.0.0

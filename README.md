@@ -1,17 +1,9 @@
-## Welcome to your new Zeek Package!
+## OUI Logging Module
 
-Here's what you might want to do next. Simply delete this file when it's no longer needed.
+This adds an orig_mac_oui field to the conn and dhcp logs. This field contains the name of the device manufacturer/vendor based on the mac address.
 
-### TODO List
+### Installation
 
-1. [Create a repository](https://github.com/new).
-   It doesn't need to be initialized with any files.
-2. Initialize git: `.helpers/git_init`
-3. Push the branches:
-
-        git remote add origin git@github.com:iamckn/oui-logging.git
-        git push -u origin master; git push -u origin gh-pages
-
-4. [Sign in to Coveralls and Set the Repo to On](https://coveralls.io/repos/new)
-
-You're done! [Delete this file](https://github.com/iamckn/oui-logging/delete/master/README.md).
+```
+sudo /usr/local/zeek/bin/zkg install https://github.com/iamckn/oui-logging
+```

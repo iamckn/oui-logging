@@ -7,8 +7,9 @@ used with the OUI module to allow for OUI lookups in Bro.
 
 import re
 import requests
-import os
+import sys
 import shutil
+import time
 
 from argparse import ArgumentParser
 from tempfile import NamedTemporaryFile
@@ -16,14 +17,20 @@ from tempfile import NamedTemporaryFile
 # IEEE publishes a list of OUIs. Unfortunately, this URL is not currently
 # available over HTTPS
 _IEEE_OUI_LIST = 'http://standards-oui.ieee.org/oui.txt'
+_RETRY_COUNT = 3
 
 def main(fpath):
 
     # retrieve the IEEE OUI list
-    resp = requests.get(_IEEE_OUI_LIST, stream=True)
-
-    if resp.status_code != 200:
-        os.exit(1)
+    for i in range(_RETRY_COUNT):
+        try:
+            resp = requests.get(_IEEE_OUI_LIST, stream=True)
+            if resp.status_code == 200:
+                break
+        except requests.RequestException as e:
+            time.sleep(1)
+    else:
+        sys.exit(1)
 
     # pull out the 'hex' line from the ieee oui list
     parser = b'^(.*?)\s.*?\(hex\)\t\t(.*?)$'

@@ -33,6 +33,7 @@ def main(fpath):
             break
         # if status code is not 200, retry after delay
         else:
+            print(f"Status code: {resp.status_code} | Error message: {resp.text}")
             sleep(retry_delay)
     else:
         # if the loop completes without breaking (all attempts failed), exit

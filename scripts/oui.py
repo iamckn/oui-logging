@@ -16,17 +16,17 @@ from time import sleep
 
 # IEEE publishes a list of OUIs. Unfortunately, this URL is not currently
 # available over HTTPS
-_IEEE_OUI_LIST = 'http://standards-oui.ieee.org/oui.txt'
+_IEEE_OUI_LIST = 'https://standards-oui.ieee.org/oui/oui.txt'
 
 def main(fpath):
 
     retries = 12
     retry_delay = 5
-
+    req_headers = {"User-Agent":"curl/7.81.0"}
     # retry logic to check if the request succeeds
     for attempt in range(retries):
         # retrieve the IEEE OUI list
-        resp = requests.get(_IEEE_OUI_LIST, stream=True)
+        resp = requests.get(_IEEE_OUI_LIST, headers=req_headers , stream=True)
 
         # if request is successful (status code 200), break the loop and proceed
         if resp.status_code == 200:

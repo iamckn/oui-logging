@@ -14,8 +14,7 @@ from argparse import ArgumentParser
 from tempfile import NamedTemporaryFile
 from time import sleep
 
-# IEEE publishes a list of OUIs. Unfortunately, this URL is not currently
-# available over HTTPS
+# IEEE publishes a list of OUIs
 _IEEE_OUI_LIST = 'https://standards-oui.ieee.org/oui/oui.txt'
 
 def main(fpath):
